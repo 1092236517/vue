@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="static/bitbug_favicon.ico">
+    <title>筑牛联采管理系统</title>
+    <!-- <link href="//at.alicdn.com/t/font_688533_a11f2x5lvy.css" rel="stylesheet" type="text/css" /> -->
+
+    <link href="//at.alicdn.com/t/font_688533_e276gpgp0x6.css" rel="stylesheet" type="text/css" />
+
+    <!-- 步骤条icon   夏杰你好-->
+    <link href="//at.alicdn.com/t/font_754788_z00yok7f9ij.css" rel="stylesheet" type="text/css">
+
+
+
+    <!-- <link rel="stylesheet" href="iconfont.css"> -->
+
+    <style>
+      html,body{
+        margin:0;
+        height: 100%;
+        width: 100%;
+        min-width: 1200px;
+        min-height: 600px;
+      }
+      ul,li{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .clearfix:after{
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+      }
+      #app{
+        height: 100%;
+        width:100% ;
+        position: relative;
+      }
+      #app .el-checkbox{
+        color: #000;
+        white-space: normal;
+      }
+      #app .el-checkbox__input.is-checked+.el-checkbox__label{
+        color: #1E6ED3;
+      }
+      /* 公共样式  --陈广玖 */
+      table{
+        text-align: center;
+      }
+      .tabelBtn{
+        margin: 0 5px;
+        width: 40px;
+        text-align: center;
+        display: inline-block;
+      }
+      .nomalBtn1,.nomalBtn1.el-button--primary,.nomalBtn1.el-button--primary:focus{
+        text-align: center;
+        color: #fff;
+        background-color: #0576DB;
+        border: 1px solid #0576DB;
+        cursor: pointer;
+      }
+      .nomalBtn1:hover,.nomalBtn1.el-button--primary:hover{
+        border: 1px solid #03539a;
+        background-color: #03539a;
+        color: #fff;
+      }
+      .nomalBtn1:active,.nomalBtn1.el-button--primary:active{
+        background-color: #E7E7E7;
+        color: #FFF;
+        border: 1px solid #E7E7E7;
+      }
+      .nomalBtn2,.nomalBtn2.el-button--primary,.nomalBtn2.el-button--primary:focus{
+        text-align: center;
+        color: #fff;
+        background-color: #f7532d;
+        border: 1px solid #f7532d;
+        cursor: pointer;
+      }
+      .nomalBtn2:hover,.nomalBtn2.el-button--primary:hover{
+        border: 1px solid #d53611;
+        background-color: #d53611;
+        color: #fff;
+      }
+      .nomalBtn2:active,.nomalBtn2.el-button--primary:active{
+        background-color: #FB7964;
+        color: #FFF;
+        border: 1px solid #FB7964;
+      }
+      .nomalBtn,.nomalBtn.el-button--primary,.nomalBtn.el-button--primary:focus{
+        text-align: center;
+        color: #fff;
+        background-color: #0576DB;
+        border: 1px solid #0576DB;
+        cursor: pointer;
+      }
+      .nomalBtn:hover,.nomalBtn.el-button--primary:hover{
+        border: 1px solid #0576DB;
+        background-color: #fff;
+        color: #0576DB;
+      }
+      .nomalBtn:active,.nomalBtn.el-button--primary:active{
+        background-color: #E7E7E7;
+        color: #FFF;
+        border: 1px solid #E7E7E7;
+      }
+      body .el-message-box__header{
+        height: 24px;
+        background-color: #0576DB;
+      }
+      body .el-message-box__title{
+        color: #fff;
+      }
+      body .el-message-box__headerbtn .el-message-box__close{
+        color: #FFF;
+      }
+      body .el-step__title.is-process{
+        color: #0576DB;
+      }
+      body .el-step__head.is-process{
+        color: #0576DB;
+      }
+      body .el-step__head.is-process{
+        border-color: #0576DB;
+      }
+      body .el-step__head.is-success{
+        color:#0576DB;
+      }
+      body .el-step__icon-inner.is-status.el-icon-check{
+        color:#67c23a;
+      }
+      body .el-menu-item,body .el-submenu__title{
+        text-align: left;
+      }
+      body .el-menu{
+        border-right: none;
+      }
+      body .el-dropdown-menu__item--divided:before,
+      body .el-menu, .el-menu--horizontal>.el-menu-item:not(.is-disabled):focus,
+      body .el-menu--horizontal>.el-menu-item:not(.is-disabled):hover,
+      body .el-menu--horizontal>.el-submenu .el-submenu__title:hover{
+        background-color: #26313C;
+      }
+      body .el-menu-item,
+      body .el-submenu__title{
+        color: #909294;
+      }
+      body .el-menu-item,body .el-submenu__title{
+        border-left: 5px solid #26313C;
+      }
+      body .el-menu-item:focus,body .el-menu-item:hover,body .el-submenu__title:focus,body .el-submenu__title:hover{
+        border-left: 5px solid #409eff;
+        background-color: #204266;
+        color: #fff;
+      }
+      body .el-menu-item.is-active{
+        border-left: 5px solid #409eff;
+        background-color: #204266;
+        color: #fff;
+      }
+      body .pageCont{
+        position: absolute;
+        left: 50%;
+        text-align: center;
+        margin-left: -225px;
+        margin-top: 30px;
+        padding-bottom: 50px;
+        width: 450px;
+      }
+      body .el-dialog__header{
+        background-color: #2793f4;
+      }
+      body .el-dialog__title{
+        color: #fff;
+      }
+      body .el-dialog__headerbtn .el-dialog__close{
+        color: #fff;
+      }
+      body .el-dialog__headerbtn:focus .el-dialog__close,body .el-dialog__headerbtn:hover .el-dialog__close{
+        color: #fff;
+      }
+      /* body .el-upload-list.el-upload-list--text{
+        width: 300px;
+      } */
+      body .el-upload-list{
+        width: 50%;
+      }
+
+      /* 沛沛的 css */
+      body .el-table th{
+        background-color: #2793f4 ;
+        text-align: center ;
+      }
+      body .el-table--border th{
+        /* border-right: none ; */
+      }
+      body .el-table thead{
+        color: #fff ;
+      }
+      body .el-table .cell {
+          height: 100%;
+          width: 100%;
+          /* white-space: nowrap ;
+          overflow: hidden;
+          text-overflow: ellipsis; */
+      }
+      body .el-table__body .cell{
+        font-size: 12px;
+      }
+      body .requiredSpan{
+        color: #d53611;
+        position: relative;
+        left: -12px;
+      }
+
+      .mainDiv{
+        overflow: auto;
+      }
+      /*步骤条icon*/
+      body .el-step__icon-inner.step-icon{
+        font-size: 30px;
+      }
+      #app{
+        height: 100%;
+      }
+      /*骨架屏样式*/
+      .skeleton{
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+      }
+      .skeleton .skeleton-content{
+        text-align: center;
+        background: -webkit-linear-gradient(left, #283643, #0576DB 25%, #283643 50%, #0576DB 75%, #283643);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-background-size: 200% 100%;
+        -webkit-animation: masked-animation 3s infinite linear;
+        font-size: 60px;
+      }
+      @-webkit-keyframes masked-animation {
+           0%{ background-position: 0 0;}
+           100% { background-position: -100% 0;}
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="skeleton">
+        <h1 class="skeleton-content">欢迎访问筑牛联采</h1>
+      </div>
+    </div>
+  </body>
+
+</html>

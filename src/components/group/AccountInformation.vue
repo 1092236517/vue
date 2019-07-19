@@ -1,0 +1,234 @@
+<template>
+	<div class="pay-account-wrapper">
+		<h2 class="title">我的账户</h2>
+		<div class="content">
+			<div>
+				<button type="button" class="btn add-btn" @click="addPayAccount">添加账户</button>
+			</div>
+			<div class="pay-account-table">
+				<el-table
+                    ref="multipleTable"
+				  	:data="payAccountList"
+				  	stripe
+				  	style="width: 100%">
+				  		<el-table-column
+				    		prop="id"
+				    		label="编号"
+				    		width="100">
+				  		</el-table-column>
+				  		<el-table-column
+				    		prop="bank_name"
+				    		label="开户行">
+				  		</el-table-column>
+						<el-table-column
+							prop="account_name"
+				  			label="账号名称">
+						</el-table-column>
+                        <el-table-column
+							prop="account"
+				  			label="账号"
+				  			width="270">
+						</el-table-column>
+                        <el-table-column
+				  			label="操作"
+				  			width="270">
+				  			<template slot-scope="scope">
+								<div v-if="scope.row.status == 'Using'" class="default-pay">默认支付</div>
+				  				<button v-else type="button" class="btn table-edit-btn" @click="setDefault(scope.row.id)">设为默认支付</button>
+				  				<button type="button" class="btn table-del-btn" @click="deletePayAccount(scope.row.id)">删除</button>
+				  			</template>
+						</el-table-column>
+				</el-table>
+			</div>
+		</div>
+        <div class="pageCont" v-if="total > 10">
+            <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="total"
+                :currentPage="currentPage"
+                @current-change="current_change">
+            </el-pagination>
+        </div>
+	</div>
+</template>
+
+<script>
+	export default {
+        name: 'PayAccountList',
+		data(){
+			return{
+				token:'',
+                total: 0,
+                currentPage: 1,
+				payAccountList: []
+			}
+		},
+        created(){
+			this.token = this.$cookies.get('ZL_token');
+            this.getPayAccountList(1);
+        },
+        methods: {
+            //获取列表
+            getPayAccountList(pageNum){
+                let that=this;
+                let params={
+					token:that.token,
+					type:that.type,
+                    current_page: pageNum,
+					per_page: 10,
+					type: 'group',
+                }
+                that.$api.bank_accountList(params).then(response => {
+					if(response.data.msg_code===100000){
+						that.total = response.data.response.total;
+						that.payAccountList = response.data.response.data;
+					}else{
+						that.$alert(response.data.message,'提示',{
+							confirmButtonText: '知道了',
+							callback: action => {
+								result.message
+							}
+						})
+					}
+                }).catch(error => {
+                    that.$alert(error,'提示',{
+                        confirmButtonText: '知道了',
+                        callback: action => {
+                            //todo
+                        }
+                    })
+                })
+            },
+            //新增
+            addPayAccount(){
+                this.$router.push({name: 'groupAccountInformationAdd'});
+			},
+			//设为默认支付
+			setDefault(id){
+				let that = this;
+				let params = {
+					token: that.token,
+					type: 'group',
+					id: id
+				}
+				that.$confirm('是否设为默认？', '提示', {
+                    confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type:'warning'
+                }).then(()=>{
+					that.$api.bank_accountSetDefault(params).then(response => {
+						if(response.data.msg_code === 100000){
+							that.getPayAccountList(that.currentPage)
+							that.$message({
+								type: 'success',
+								message: '设为默认成功'
+							});
+						}
+					}).catch(error=>{
+						console.log(error);
+					})
+				}).catch(() => {
+                    that.$message({
+						type: 'info',
+						message: '已取消设为默认'
+					});
+                })
+			},
+            //删除
+            deletePayAccount(id){
+				let that = this;
+				let params = {
+					token: that.token,
+					id: id,
+					type: 'group'
+                };
+                that.$confirm('是否确认删除？', '提示', {
+                    confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type:'warning'
+                }).then(() => {
+					that.$api.bank_accountDelete(params).then(response => {
+						if(response.data.msg_code === 100000){
+							that.getPayAccountList(that.currentPage)
+							this.$message({
+								type: 'success',
+								message: '删除成功'
+							}); 
+						}
+					}).catch(error => {
+						console.log(error);
+					})
+				}).catch(() => {
+                    this.$message({
+						type: 'info',
+						message: '已取消删除'
+					}); 
+                })
+            },
+            //列表分页
+            current_change:function(currentPage){
+                this.currentPage = currentPage;
+                this.getPayAccountList(currentPage);
+            },
+        }
+	}
+</script>
+
+<style lang="less" scoped>
+	.pay-account-wrapper{
+		.title{
+			margin-top: 0;
+			margin-bottom: 30px;
+		}
+		.content{
+			margin-top: 10px;
+			background: #fff;
+			.btn{
+				outline: none;
+				border: 0;
+				margin: 0;
+				padding: 0;
+				background: none;
+				cursor: pointer;
+			}
+			.add-btn{
+				width: 68px;
+				height: 30px;
+				background: #2793F4;
+				font-size: 12px;
+				color: #fff;
+				border-radius: 4px;
+				margin-right: 10px;
+			}
+			.pay-account-table{
+				margin-top: 20px;
+				.table-edit-btn{
+					width: 80px;
+					height: 20px;
+					font-size: 12px;
+					color: #2793F4;
+					border: 1px solid #2793F4;
+					border-radius: 4px;
+                    margin-right: 10px;
+				}
+				.table-del-btn{
+					width: 80px;
+					height: 20px;
+					font-size: 12px;
+					color: #FF4B4B;
+					border: 1px solid #FF4B4B;
+					border-radius: 4px;
+				}
+				.default-pay{
+					display: inline-block;
+					font-size: 12px;
+					font-weight: 400;
+					color: #333;
+					width: 80px;
+					margin-right: 10px;
+				}
+			}
+		}
+	}
+</style>
